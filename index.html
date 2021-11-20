@@ -87,7 +87,25 @@
     </section>
   </main>
 
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
   <script>
+    window.TrackJS && TrackJS.install({ 
+      token: "91aefdb3ac71477ba1462a92d6ab2fa0"
+      // for more configuration options, see https://docs.trackjs.com
+    });
+  </script>
+
+  <script>
+
+    TrackJS.track('Testing TrackJS!');
+    
+    class InputError extends Error {
+      constructor(message) {
+        super(message); // (1)
+        this.name = "InputError"; // (2)
+      }
+    }
+
     let form = document.querySelector('form');
     form.addEventListener('submit', e => {
       e.preventDefault();
@@ -95,13 +113,114 @@
       let firstNum = document.querySelector('#first-num').value;
       let secondNum = document.querySelector('#second-num').value;
       let operator = document.querySelector('#operator').value;
-      output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      try{
+        output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      }
+      catch(err){
+        throw new InputError('Invalid inputs, choose new inputs')
+      }
+      finally{
+        console.log('Only numbers can be inputted');
+      }
     });
+
+    window.onerror = function(message, source, lineno, colno, error) {
+      console.log("window.onerror is working! error is " + error);
+    };
 
     let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
 
     // Start your code here
     // You may move this JS to another file if you wish
+    // Console Log
+    errorBtns[0].addEventListener('click', event => {
+      console.log("Console Log Demo");
+    });
+
+    // Console Error
+    errorBtns[1].addEventListener('click', event => {
+      console.error("Console Error Demo");
+    });
+
+    // Console Count
+    errorBtns[2].addEventListener('click', event => {
+      console.count("Count Button");
+    });    
+
+    // Console Warn
+    errorBtns[3].addEventListener('click', event => {
+      console.warn("Console Warn Button");
+    });
+
+    // Console Assert
+    errorBtns[4].addEventListener('click', event => {
+      x = 2;
+      console.assert(x == 3, "Number: " + x + ", The number does not equal 3");
+    });
+
+    // Console Clear
+    errorBtns[5].addEventListener('click', event => {
+      console.clear();
+    });
+
+    // Console Dir
+    errorBtns[6].addEventListener('click', event => {
+      console.dir(errorBtns[6]);
+    });
+
+    // Console Dirxml
+    errorBtns[7].addEventListener('click', event => {
+      console.dirxml(errorBtns[7]);
+    });
+
+    // Console Group Start
+    errorBtns[8].addEventListener('click', event => {
+      console.group('console.group');
+    });
+
+    // Console Group End
+    errorBtns[9].addEventListener('click', event => {
+      console.groupEnd();
+    });
+
+    // Console Table
+    function Item(name, num) {
+      this.name = name;
+      this.num = num;
+    }
+    var one = new Item("Apple", "3");
+    var two = new Item("Orange", "5");
+    var three = new Item("Banana", "4");
+    errorBtns[10].addEventListener('click', event => {
+      console.table([one, two, three]);
+    });
+
+    // Console Start Timer
+    errorBtns[11].addEventListener('click', event => {
+      console.time("Timer Button");
+    });
+
+    // Console End Timer
+    errorBtns[12].addEventListener('click', event => {
+      console.timeEnd("Timer Button");
+    });
+
+    // Console Trace
+    errorBtns[13].addEventListener('click', event => {
+      //https://developer.mozilla.org/en-US/docs/Web/API/console/trace
+      function foo() {
+        function bar() {
+          console.trace();
+        }
+        bar();
+        }
+      foo();
+    });
+
+    // Console Global Error
+    errorBtns[14].addEventListener('click', event => {
+      throw new Error('GLOBAL ERROR');
+    });
   </script>
 </body>
 
